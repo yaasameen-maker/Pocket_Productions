@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Home', icon: 'grid_view', route: '/dashboard' },
   { id: 'assets', label: 'Assets', icon: 'layers', route: '/home' },
-  { id: 'budget', label: 'Budget', icon: 'payments', route: '/budget' },
   { id: 'schedule', label: 'Schedule', icon: 'calendar_month', route: '/schedule' },
   { id: 'crew', label: 'Crew', icon: 'group', route: '/crew' },
 ];
@@ -78,7 +77,7 @@ export default function BottomNav({ onAdd, initialActive }: Props) {
       </div>
 
       {/* Last 3 tabs */}
-      {NAV_ITEMS.slice(2).map((item) => (
+      {NAV_ITEMS.slice(2, 4).map((item) => (
         <button
           key={item.id}
           onClick={() => navigate(item.route)}
