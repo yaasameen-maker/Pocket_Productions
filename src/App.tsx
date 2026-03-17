@@ -37,8 +37,11 @@ export default function App() {
         {/* Desktop */}
         <Route path="/dashboard" element={<DesktopDashboard />} />
 
+        {/* Landing / PWA install */}
+        <Route path="/" element={<PWAInstallScreen />} />
+
         {/* Mobile pages */}
-        <Route path="/" element={<HomeScreen />} />
+        <Route path="/home" element={<HomeScreen />} />
         <Route path="/budget" element={<BudgetScreen />} />
         <Route path="/schedule" element={<ScheduleScreen />} />
         <Route path="/nexus" element={<NexusOpsScreen />} />

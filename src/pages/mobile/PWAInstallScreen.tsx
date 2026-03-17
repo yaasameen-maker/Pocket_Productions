@@ -5,7 +5,7 @@ export default function PWAInstallScreen() {
 
   const handleInstall = () => {
     // In a real PWA this would trigger the beforeinstallprompt event
-    navigate('/');
+    navigate('/home');
   };
 
   return (
