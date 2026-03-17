@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 const SIDEBAR_NAV = [
   { label: 'Dashboard', icon: 'grid_view', route: '/dashboard' },
-  { label: 'Projects', icon: 'folder_special', route: '/projects' },
+  { label: 'Projects', icon: 'folder_special', route: '/projects-desktop' },
+  { label: 'Budgets', icon: 'payments', route: '/budgets' },
   { label: 'Calendar', icon: 'calendar_month', route: '/calendar-desktop' },
   { label: 'Locations', icon: 'location_on', route: '/locations-desktop' },
-  { label: 'Storyboard', icon: 'movie_filter', route: '/storyboard' },
-  { label: 'Team', icon: 'group', route: '/crew' },
+  { label: 'Storyboard', icon: 'movie_filter', route: '/storyboard-desktop' },
+  { label: 'Team', icon: 'group', route: '/team-desktop' },
   { label: 'Assets', icon: 'layers', route: '/assets', active: true },
 ];
 
