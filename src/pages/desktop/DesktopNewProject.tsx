@@ -165,20 +165,32 @@ export default function DesktopNewProject() {
   const removeLocation = (id: string) => setLocations((p) => p.filter((m) => m.id !== id));
 
   // ── Submit ──────────────────────────────────────────────────────────────────
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const project = {
-      id: uid(),
-      title: title || 'Untitled Project',
-      projectType, genre, status, tagline, company,
-      startDate, endDate, shootDays, totalBudget,
-      director, dp, producer,
-      cast, crew, locations,
-      createdAt: new Date().toISOString(),
-    };
-    const existing = JSON.parse(localStorage.getItem('pp_projects') || '[]');
-    localStorage.setItem('pp_projects', JSON.stringify([project, ...existing]));
-    navigate('/projects-desktop');
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const token = await getToken();
+      if (!token) throw new Error('Not authenticated');
+      await apiPost(token, '/api/projects', {
+        title: title || 'Untitled Project',
+        format: projectType,
+        genre: genre || undefined,
+        totalBudget: parseFloat(totalBudget) || 1000,
+        logline: tagline || undefined,
+        notes: JSON.stringify({
+          company, status, startDate, endDate, shootDays,
+          director, dp, producer, cast, crew, locations,
+        }),
+      });
+      navigate('/projects-desktop');
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Failed to create project');
+      setSubmitting(false);
+    }
   };
 
   // ─── Reusable styles ────────────────────────────────────────────────────────
@@ -559,6 +571,13 @@ export default function DesktopNewProject() {
             )}
           </div>
 
+          {submitError && (
+            <div className="rounded-xl bg-red-900/20 border border-red-500/20 p-3 flex items-center gap-2">
+              <span className="material-symbols-outlined text-red-400 text-[16px]">error</span>
+              <p className="text-xs text-red-300">{submitError}</p>
+            </div>
+          )}
+
           {/* ── Footer ── */}
           <div className="pt-6 flex items-center justify-between border-t border-slate-800">
             <div className="flex items-center gap-3 text-slate-500">
@@ -570,10 +589,21 @@ export default function DesktopNewProject() {
                 className="px-6 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 font-medium transition-all text-sm">
                 Cancel
               </button>
-              <button type="submit"
-                className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-xl shadow-blue-600/30 text-sm flex items-center gap-2 group">
-                Initialize Production
-                <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">rocket_launch</span>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="bg-blue-600 hover:bg-blue-500 disabled:opacity-60 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-xl shadow-blue-600/30 text-sm flex items-center gap-2 group">
+                {submitting ? (
+                  <>
+                    <span className="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
+                    Creating…
+                  </>
+                ) : (
+                  <>
+                    Initialize Production
+                    <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">rocket_launch</span>
+                  </>
+                )}
               </button>
             </div>
           </div>

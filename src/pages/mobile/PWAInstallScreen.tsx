@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import QRCode from 'react-qr-code';
 import { usePWAInstall } from '../../hooks/usePWAInstall';
+import { hasInstalledApp } from '../../hooks/useDeviceMemory';
 
 const APP_URL = window.location.origin;
+const INSTALL_URL = `${APP_URL}/install`;
 
 function AppQRCode() {
   return (
@@ -12,7 +14,7 @@ function AppQRCode() {
     >
       <div className="rounded-xl overflow-hidden p-2" style={{ background: '#ffffff' }}>
         <QRCode
-          value={APP_URL}
+          value={INSTALL_URL}
           size={148}
           bgColor="#ffffff"
           fgColor="#080c14"
@@ -20,7 +22,7 @@ function AppQRCode() {
         />
       </div>
       <p className="text-[10px] text-center font-mono break-all" style={{ color: 'rgba(255,255,255,0.5)' }}>
-        {APP_URL}
+        {INSTALL_URL}
       </p>
     </div>
   );
@@ -36,8 +38,10 @@ export default function PWAInstallScreen() {
     }
   };
 
+  const alreadyInstalled = isInstalled || hasInstalledApp();
+
   // ── Already installed ──────────────────────────────────────────────────────
-  if (isInstalled) {
+  if (alreadyInstalled) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center text-center px-6"
         style={{ background: '#0A0A0A' }}>
@@ -86,7 +90,7 @@ export default function PWAInstallScreen() {
 
           <AppQRCode />
 
-          <p className="text-xs font-mono" style={{ color: '#8E8E93' }}>{APP_URL}</p>
+          <p className="text-xs font-mono" style={{ color: '#8E8E93' }}>{INSTALL_URL}</p>
 
           <div className="w-full h-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
 

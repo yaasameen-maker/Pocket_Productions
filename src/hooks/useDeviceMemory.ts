@@ -45,3 +45,17 @@ export function hasAnsweredRememberPrompt(userId: string): boolean {
 export function markRememberPromptAnswered(userId: string, answer: 'yes' | 'no'): void {
   localStorage.setItem(`pp_remember_asked_${userId}`, answer);
 }
+
+const INSTALL_KEY = 'pp_app_installed';
+
+export function markAppInstalled(): void {
+  localStorage.setItem(INSTALL_KEY, JSON.stringify({ installedAt: Date.now() }));
+}
+
+export function hasInstalledApp(): boolean {
+  try {
+    return !!localStorage.getItem(INSTALL_KEY);
+  } catch {
+    return false;
+  }
+}

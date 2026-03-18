@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { markAppInstalled } from './useDeviceMemory';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -29,6 +30,7 @@ if (typeof window !== 'undefined') {
   window.addEventListener('appinstalled', () => {
     _isInstalled = true;
     _deferredPrompt = null;
+    markAppInstalled();
     notify();
   });
 }
@@ -71,6 +73,7 @@ export function usePWAInstall() {
     if (outcome === 'accepted') {
       _isInstalled = true;
       _deferredPrompt = null;
+      markAppInstalled();
       setIsInstalled(true);
       setInstallPrompt(null);
     }

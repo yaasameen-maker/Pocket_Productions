@@ -2,6 +2,7 @@ import QRCode from 'react-qr-code';
 import DesktopLayout from '../../components/DesktopLayout';
 
 const APP_URL = window.location.origin;
+const INSTALL_URL = `${APP_URL}/install`;
 
 export default function DesktopInstall() {
   return (
@@ -43,7 +44,7 @@ export default function DesktopInstall() {
           >
             <div className="relative w-64 h-64 flex items-center justify-center">
               <QRCode
-                value={APP_URL}
+                value={INSTALL_URL}
                 size={256}
                 bgColor="#ffffff"
                 fgColor="#080c14"
