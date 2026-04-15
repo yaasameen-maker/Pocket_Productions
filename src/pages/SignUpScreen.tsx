@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { SignUp } from '@clerk/clerk-react';
 
 export default function SignUpScreen() {
+  const [consented, setConsented] = useState(false);
+
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-slate-900">
       <div
@@ -24,35 +27,59 @@ export default function SignUpScreen() {
           </p>
         </div>
 
-        <SignUp
-          routing="hash"
-          forceRedirectUrl="/dashboard"
-          signInUrl="/login"
-          appearance={{
-              variables: {
-              colorPrimary: '#3b82f6',
-              colorBackground: 'rgba(15,20,30,0.92)',
-              colorText: '#ffffff',
-              colorTextSecondary: '#94a3b8',
-              colorInputBackground: 'rgba(255,255,255,0.07)',
-              colorInputText: '#ffffff',
-              borderRadius: '0.75rem',
-              fontFamily: "'Public Sans', sans-serif",
-            },
-            elements: {
-              card: 'shadow-2xl backdrop-blur-xl border border-white/10',
-              headerTitle: 'hidden',
-              headerSubtitle: 'hidden',
-              socialButtonsBlockButton: 'border-white/10 text-slate-300 hover:bg-white/5',
-              formButtonPrimary: 'bg-gradient-to-r from-blue-500 to-blue-600 hover:brightness-110',
-              footerActionLink: 'text-blue-400 hover:text-blue-300',
-            },
-          }}
-        />
-
-        <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mt-4 text-center">
-          Terminal Access 1.0.4 // Production Mode
-        </p>
+        {/* Consent checkbox — must be checked before Clerk form is shown */}
+        {!consented ? (
+          <div style={{ width: '100%', maxWidth: 400, background: 'rgba(15,20,30,0.92)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: 24, marginBottom: 16 }}>
+            <p style={{ color: '#cbd5e1', fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>
+              Before creating an account, please confirm that you have read and agree to our data practices.
+            </p>
+            <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                onChange={(e) => setConsented(e.target.checked)}
+                style={{ marginTop: 3, accentColor: '#3b82f6', width: 16, height: 16, flexShrink: 0 }}
+              />
+              <span style={{ color: '#94a3b8', fontSize: 13, lineHeight: 1.6 }}>
+                I agree to the{' '}
+                <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa' }}>Terms of Use</a>
+                {' '}and{' '}
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#60a5fa' }}>Privacy Policy</a>.
+                {' '}I understand that my production data (crew rates, budgets, locations) will be stored securely and never sold to third parties.
+              </span>
+            </label>
+          </div>
+        ) : (
+          <>
+            <SignUp
+              routing="hash"
+              forceRedirectUrl="/dashboard"
+              signInUrl="/login"
+              appearance={{
+                variables: {
+                  colorPrimary: '#3b82f6',
+                  colorBackground: 'rgba(15,20,30,0.92)',
+                  colorText: '#ffffff',
+                  colorTextSecondary: '#94a3b8',
+                  colorInputBackground: 'rgba(255,255,255,0.07)',
+                  colorInputText: '#ffffff',
+                  borderRadius: '0.75rem',
+                  fontFamily: "'Public Sans', sans-serif",
+                },
+                elements: {
+                  card: 'shadow-2xl backdrop-blur-xl border border-white/10',
+                  headerTitle: 'hidden',
+                  headerSubtitle: 'hidden',
+                  socialButtonsBlockButton: 'border-white/10 text-slate-300 hover:bg-white/5',
+                  formButtonPrimary: 'bg-gradient-to-r from-blue-500 to-blue-600 hover:brightness-110',
+                  footerActionLink: 'text-blue-400 hover:text-blue-300',
+                },
+              }}
+            />
+            <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mt-4 text-center">
+              Terminal Access 1.0.4 // Production Mode
+            </p>
+          </>
+        )}
       </div>
     </div>
   );

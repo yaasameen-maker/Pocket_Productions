@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Landing
 import LandingPage from './pages/LandingPage';
+import TermsOfUsePage from './pages/TermsOfUsePage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import InviteAcceptPage from './pages/InviteAcceptPage';
 
 // Auth
 import LoginScreen from './pages/LoginScreen';
@@ -51,6 +54,13 @@ export default function App() {
         {/* Landing / PWA install */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/install" element={<PWAInstallScreen />} />
+
+        {/* Legal (public) */}
+        <Route path="/terms" element={<TermsOfUsePage />} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
+
+        {/* Invite accept (public — Clerk handles auth inside the page) */}
+        <Route path="/invite/accept" element={<InviteAcceptPage />} />
 
         {/* Dashboard — mobile PWA or desktop web */}
         <Route

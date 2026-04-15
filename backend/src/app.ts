@@ -18,6 +18,8 @@ import aiRouter from './routes/ai';
 import uploadRouter from './routes/upload';
 import sagRatesRouter from './routes/sagRates';
 import parseRouter from './routes/parse';
+import teamRouter from './routes/team';
+import usersRouter from './routes/users';
 
 // Middleware
 import { authMiddleware } from './middleware/auth';
@@ -41,6 +43,8 @@ app.get('/health', (_req, res) => {
 
 // ─── Public Routes (no auth) ──────────────────────────────────────────────────
 app.use('/api/sag-rates', sagRatesRouter);
+// Invite preview is public (crew needs to see invite details before logging in)
+app.use('/api/team/invites', teamRouter);
 
 // ─── Protected Routes (requires Clerk auth) ───────────────────────────────────
 app.use('/api', authMiddleware);
@@ -56,6 +60,8 @@ app.use('/api/color-palettes', colorPalettesRouter);
 app.use('/api/ai', aiRouter);
 app.use('/api/upload', uploadRouter);
 app.use('/api/parse', parseRouter);
+app.use('/api/projects', teamRouter);
+app.use('/api/users', usersRouter);
 
 // ─── 404 Handler ─────────────────────────────────────────────────────────────
 app.use((_req, res) => {
